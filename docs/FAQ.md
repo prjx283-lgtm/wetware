@@ -37,7 +37,10 @@ DeepWorm's enclave ran out of gas in January 2025 and nobody noticed for eightee
 Yes. Clone the repo, `npm ci`, `npm run verify` to check the chain, `npm run simulate 200` to run the organism offline, `npm run site` for the visualiser. The offline run must end with hash `0x0f823b06…4719` on any machine.
 
 **What does the token do?**
-Nothing to the worm. It does not feed it, steer it or change it. The token is a separate event and any claim otherwise is false.
+$WETWARE launches on Pons, paired with tokenized NVDA on Robinhood Chain. Every buy and every sell carries a 2% tax, and those taxes fund rewards paid to holders in tokenized NVDA. Rewards scale with trading volume: if nobody trades, nobody gets paid. They are tokenized NVDA on Robinhood Chain, not NVIDIA shares, and they are not dividends. None of this touches the worm. The token does not feed it, steer it or change it.
+
+**Do rewards stop when the worm sleeps?**
+No. The worm sleeps because the price feed stops outside market hours. Rewards are a token mechanism on their own schedule and keep going on weekends and holidays. Two separate systems. Only one of them has a nervous system.
 
 **Is Robinhood, Chainlink or OpenWorm involved?**
 No. WETWARE runs on Robinhood Chain and reads Chainlink feeds; the simulator is forked from nematoduino and the connectome comes from OpenWorm. Credit is not endorsement.

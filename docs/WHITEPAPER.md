@@ -160,7 +160,7 @@ The intended deployment is Marlin Oyster, with a reproducible Nix build and publ
 - **Not a trading signal.** The organism's heading carries no information about where the price goes.
 - **Not a mascot with a random number generator.** Every state is a pure function of public data and can be reproduced.
 - **Not a Robinhood or Chainlink product.** It runs on their infrastructure. Credit is not endorsement, and the same applies to nematoduino and OpenWorm, whose work this is built on.
-- **Not controlled by a token.** Any token associated with the project does not feed, steer or change the organism.
+- **Not steered by the token.** $WETWARE trades against tokenized NVDA with a 2% buy and 2% sell tax that funds holder rewards paid in tokenized NVDA, distributed continuously regardless of market hours. None of that reaches the organism; the worm eats the price feed and nothing else. Rewards scale with trading volume and are a mechanism, not a promise.
 
 ### 11. Limitations and honest caveats
 

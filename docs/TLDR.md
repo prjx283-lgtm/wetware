@@ -31,8 +31,15 @@ gets low.
 
 ## What it is not
 
-Not an AI. Not a trading signal. Not a Robinhood or Chainlink product. Not controlled by any
+Not an AI. Not a trading signal. Not a Robinhood or Chainlink product. Not steered by the
 token. It does not know what NVDA is.
+
+## The token
+
+$WETWARE trades against tokenized NVDA with a 2% buy and 2% sell tax. The taxes pay
+holders in tokenized NVDA, around the clock, market open or closed. Rewards scale with
+volume and are never promised. None of it reaches the worm. The worm sleeps. The rewards
+don't.
 
 ## What comes next
 

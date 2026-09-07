@@ -1,0 +1,44 @@
+# Builds the site and publishes it to GitHub Pages.
+# Gated on a repository variable so the workflow stays quiet until a human
+# turns Pages on: set WETWARE_PAGES=true under Settings > Variables.
+name: site
+
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', 'docs/**', 'VERIFY.md', 'packages/core/**', 'services/poster/**', '.github/workflows/site.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: vars.WETWARE_PAGES == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci && cd packages/core && npm ci
+      - run: npm run site:build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

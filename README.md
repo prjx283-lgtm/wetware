@@ -108,11 +108,22 @@ npm run site            # bundle with esbuild and serve on http://localhost:8787
 npm run site:build      # bundle only
 ```
 
-`?network=testnet` (default) or `?network=mainnet` picks the contract from
-`site/src/config.ts`. `?fixture=testnet-honest` and `?fixture=testnet-corrupt`
-load captured testnet history from `site/fixtures/` instead of the chain; the
-corrupt one has a single altered hash and must turn the page red. Run it
-whenever you touch the verifier. A badge that cannot fail is a lie.
+The site has five pages, all built by `site/build.mjs` into `site/dist`:
+`/` (landing, live status from the chain), `/live/` (the verifier), `/paper/`,
+`/faq/` and `/verify/`. The last three are rendered from `docs/WHITEPAPER.md`,
+`docs/FAQ.md` and `VERIFY.md`, so the site cannot say something the repo does
+not. Source pages live in `site/pages/`, scripts in `site/src/`.
+
+On the live page, `?network=testnet` (default) or `?network=mainnet` picks the
+contract from `site/src/config.ts`. `?fixture=testnet-honest` and
+`?fixture=testnet-corrupt` load captured testnet history from `site/fixtures/`
+instead of the chain; the corrupt one has a single altered hash and must turn
+the page red. Run it whenever you touch the verifier. A badge that cannot fail
+is a lie.
+
+`.github/workflows/site.yml` publishes `site/dist` to GitHub Pages once the
+repository variable `WETWARE_PAGES` is `true`. Any static host works; there is
+no server.
 
 The site is the one place in the repo with a build step, because a browser
 cannot import `.ts`. `esbuild` is a root dev dependency for that alone.

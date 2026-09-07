@@ -68,7 +68,7 @@ function announceDivergence(headline: string, detail: string, link?: string): vo
 // Worker: the actual simulator, off the main thread.
 // ---------------------------------------------------------------------------
 
-const worker = new Worker('./dist/worker.js', { type: 'module' });
+const worker = new Worker('../assets/worker.js', { type: 'module' });
 
 worker.onmessage = (event: MessageEvent<WorkerOut>) => {
   const m = event.data;
@@ -163,7 +163,7 @@ interface FixtureFile {
 }
 
 async function loadFixture(name: string): Promise<{ records: RecordedState[]; rounds: OracleRound[] }> {
-  const res = await fetch(`./fixtures/${name}.json`);
+  const res = await fetch(`../fixtures/${name}.json`);
   if (!res.ok) throw new Error(`fixture ${name} not found`);
   const file = (await res.json()) as FixtureFile;
   $('fixture-note').textContent = `Fixture mode: ${file.note}`;

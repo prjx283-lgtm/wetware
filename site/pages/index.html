@@ -1,0 +1,136 @@
+<style>
+  .hero { position: relative; z-index: 1; min-height: calc(100vh - 57px); display: grid; align-items: end; padding: 0 clamp(16px, 3vw, 40px) 56px; overflow: hidden; }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+  .hero-inner { max-width: 1320px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(300px, .8fr); gap: 32px; align-items: end; }
+  .hero h1 { font-family: var(--display); font-weight: 300; font-size: clamp(44px, 7.2vw, 108px); line-height: .92; letter-spacing: -0.035em; margin: 0 0 18px; max-width: 12ch; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero p.lede { font-family: var(--display); font-weight: 300; font-size: clamp(17px, 1.7vw, 22px); color: var(--muted); max-width: 58ch; margin: 0 0 26px; }
+  .hero p.lede b { color: var(--text); font-weight: 600; }
+  .cta { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cta a { border: 1px solid rgba(231,240,226,.18); padding: 12px 18px; border-radius: 4px; color: var(--text); font-size: 13px; letter-spacing: .04em; transition: transform .15s, background .3s, border-color .3s; }
+  .cta a.primary { background: var(--accent); color: #0b120a; border-color: var(--accent); font-weight: 600; }
+  .cta a:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .status { border: 1px solid var(--rule); background: rgba(15,23,17,.75); backdrop-filter: blur(6px); border-radius: 6px; padding: 16px 18px; font-size: 12px; }
+  .status h2 { margin: 0 0 10px; font-family: var(--display); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .status dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; }
+  .status dt { color: var(--muted); }
+  .status dd { margin: 0; color: var(--text); }
+  .status .pulse { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-right: 8px; vertical-align: 0; }
+  .status.awake .pulse { background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: pulse 1.4s ease-in-out infinite; }
+  .status.asleep .pulse { background: var(--blue); }
+  @keyframes pulse { 50% { opacity: .35; } }
+  .status .hash { word-break: break-all; color: var(--muted); }
+
+  section.band { position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: 64px clamp(16px, 3vw, 40px) 8px; }
+  section.band > h2 { font-family: var(--display); font-weight: 600; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 0 0 22px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .step { background: linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,0)), var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 20px 20px 18px; }
+  .step .n { font-family: var(--display); font-size: 40px; font-weight: 300; color: var(--accent); line-height: 1; margin-bottom: 10px; letter-spacing: -0.03em; }
+  .step h3 { font-family: var(--display); font-weight: 600; font-size: 21px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .step p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+  .step p b { color: var(--text); font-weight: 600; }
+  .claims { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .claim { border-left: 3px solid var(--accent); padding: 4px 0 4px 18px; }
+  .claim h3 { font-family: var(--display); font-weight: 300; font-size: 26px; margin: 0 0 8px; line-height: 1.1; letter-spacing: -0.02em; }
+  .claim p { margin: 0; color: var(--muted); font-size: 13px; }
+  .claim p a { color: var(--text); }
+  .quote { font-family: var(--display); font-weight: 300; font-size: clamp(26px, 3.4vw, 46px); line-height: 1.08; letter-spacing: -0.025em; max-width: 30ch; margin: 0 0 18px; }
+  .quote em { font-style: italic; color: var(--accent); }
+  .aside { color: var(--muted); max-width: 70ch; font-size: 14px; }
+  .aside b { color: var(--text); font-weight: 600; }
+  .nots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .not h3 { font-family: var(--display); font-weight: 600; font-size: 19px; margin: 0 0 6px; }
+  .not h3::before { content: "✕ "; color: var(--danger); }
+  .not p { margin: 0; color: var(--muted); font-size: 13px; }
+  .road { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--rule); }
+  .road div { padding: 18px 16px 18px 0; border-right: 1px solid var(--rule); padding-left: 16px; }
+  .road div:first-child { padding-left: 0; }
+  .road div:last-child { border-right: 0; }
+  .road .tag { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .road .tag.done { color: var(--accent); }
+  .road .tag.next { color: var(--warm); }
+  .road h3 { font-family: var(--display); font-weight: 600; font-size: 20px; margin: 0 0 6px; }
+  .road p { margin: 0; color: var(--muted); font-size: 13px; }
+  .credits { color: var(--muted); font-size: 13px; max-width: 80ch; }
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .steps, .claims, .nots, .road { grid-template-columns: 1fr; }
+    .road div { border-right: 0; border-bottom: 1px solid var(--rule); padding-left: 0; }
+  }
+</style>
+<body>
+<section class="hero">
+  <canvas id="hero-worm" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <div>
+      <h1>A real nervous system <em>eating</em> a stock price.</h1>
+      <p class="lede">A <b>C. elegans</b> worm, 299 neurons from the OpenWorm connectome, whose only sense of the world is the NVDA price feed on Robinhood Chain. Every state it reaches is recorded on chain. Every tick can be re-run in your browser. <b>It does not know what NVDA is.</b></p>
+      <div class="cta">
+        <a class="primary" href="live/">Watch it live</a>
+        <a href="paper/">Read the paper</a>
+        <a href="verify/">Verify it yourself</a>
+      </div>
+    </div>
+    <div class="status" id="status">
+      <h2><span class="pulse"></span><span id="status-title">Reading the chain…</span></h2>
+      <dl>
+        <dt>network</dt><dd id="s-net">—</dd>
+        <dt>states recorded</dt><dd id="s-states">—</dd>
+        <dt>tick</dt><dd id="s-tick">—</dd>
+        <dt>feed</dt><dd id="s-feed">—</dd>
+        <dt>state hash</dt><dd class="hash" id="s-hash">—</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <h2>How it eats</h2>
+  <div class="steps">
+    <div class="step"><div class="n">01</div><h3>Something moves</h3><p>Chainlink publishes a new NVDA round. The worm sees only the <b>relative move</b>, in basis points. A 1% print is a 1% print at $4 or $900.</p></div>
+    <div class="step"><div class="n">02</div><h3>It crawls</h3><p>The move earns ticks: <b>6 baseline, 4 more per basis point, capped at 400</b>. Which stimulus fires on each tick, food or touch, is decided by hashing the oracle round itself. Eight to two.</p></div>
+    <div class="step"><div class="n">03</div><h3>It is recorded</h3><p>A hash of <b>every neuron and every muscle</b> goes on chain. The contract re-reads the price from Chainlink first and rejects anything that does not match.</p></div>
+  </div>
+</section>
+
+<section class="band">
+  <h2>Why it cannot lie</h2>
+  <div class="claims">
+    <div class="claim"><h3>The price is not the operator's word.</h3><p>The contract reads the Chainlink round back itself and reverts on mismatch. The verifier reads it again, without the contract.</p></div>
+    <div class="claim"><h3>The simulation is a pure function.</h3><p>Deterministic, integer-only, open source, diffed against the original C tick by tick. Same rounds in, same hashes out, on any machine.</p></div>
+    <div class="claim"><h3>Your browser checks it.</h3><p>The <a href="live/">live page</a> replays every state from genesis in a Web Worker. Verified, or <b>divergence at tick N</b> in the largest text on the page. There is no third option.</p></div>
+  </div>
+</section>
+
+<section class="band">
+  <h2>The last worm died</h2>
+  <p class="quote">DeepWorm's enclave ran out of gas in January 2025. <em>Nobody noticed for eighteen months.</em></p>
+  <p class="aside">This one restores itself from the chain on every start and refuses to run if history does not reproduce. It exposes a health endpoint, publishes every run, and <b>rings a phone</b> when the balance drops. When the market closes, it sleeps, and says so.</p>
+</section>
+
+<section class="band">
+  <h2>What it is not</h2>
+  <div class="nots">
+    <div class="not"><h3>An AI</h3><p>No model, no training, no prompt. A 1986 wiring diagram, executed deterministically.</p></div>
+    <div class="not"><h3>A trading signal</h3><p>The heading carries no information about where the price goes. It reacts to moves after they happen.</p></div>
+    <div class="not"><h3>A product of Robinhood or Chainlink</h3><p>It runs on their rails. Credit is not endorsement. Same for OpenWorm and nematoduino.</p></div>
+    <div class="not"><h3>Controlled by a token</h3><p>Nothing feeds, steers or changes the organism except the price.</p></div>
+  </div>
+</section>
+
+<section class="band">
+  <h2>Roadmap</h2>
+  <div class="road">
+    <div><div class="tag done">done</div><h3>Testnet</h3><p>Deployed, fed with real NVDA rounds, verified by terminal, by CI, and by the browser.</p></div>
+    <div><div class="tag next">next</div><h3>Mainnet genesis</h3><p>The real feed, a fresh genesis, the deploy block pinned in VERIFY.md.</p></div>
+    <div><div class="tag">v2</div><h3>The enclave</h3><p>The simulator inside an attested enclave. The poster key introduced by attestation, permissionlessly.</p></div>
+    <div><div class="tag">v2</div><h3>No operator</h3><p>Ownership renounced. Nobody runs the worm. Nobody can.</p></div>
+  </div>
+</section>
+
+<section class="band">
+  <h2>Credit</h2>
+  <p class="credits">Simulator forked from <a href="https://github.com/nategri/nematoduino" target="_blank" rel="noopener">nematoduino</a> by nategri, GPL-2.0-or-later. Connectome from the <a href="https://openworm.org" target="_blank" rel="noopener">OpenWorm</a> project, after White, Southgate, Thomson and Brenner, 1986. The worm is theirs. We gave it a stock to eat and a way to be checked.</p>
+</section>
+<script type="module" src="assets/landing.js"></script>
+</body>

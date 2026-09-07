@@ -1,6 +1,6 @@
 /**
- * Static file server for local development. No API, no state: the page
- * talks to the chain directly, which is the point.
+ * Static file server for local development, serving site/dist. No API, no
+ * state: the pages talk to the chain directly, which is the point.
  *
  *   node site/serve.mjs   ->  http://localhost:8787
  */
@@ -8,7 +8,7 @@ import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 
-const root = new URL('.', import.meta.url).pathname;
+const root = new URL('./dist/', import.meta.url).pathname;
 const port = Number(process.env.PORT ?? 8787);
 const types = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.map': 'application/json',
@@ -19,10 +19,11 @@ createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', 'http://localhost');
   let path = normalize(decodeURIComponent(url.pathname)).replace(/^(\.\.[/\\])+/, '');
   if (path.endsWith('/')) path += 'index.html';
-  const file = join(root, path);
+  let file = join(root, path);
   try {
-    const s = await stat(file);
-    if (!s.isFile()) throw new Error('not a file');
+    let s = await stat(file).catch(() => null);
+    if (s && s.isDirectory()) { file = join(file, 'index.html'); s = await stat(file); }
+    if (!s || !s.isFile()) throw new Error('not a file');
     res.writeHead(200, { 'content-type': types[extname(file)] ?? 'application/octet-stream', 'cache-control': 'no-store' });
     res.end(await readFile(file));
   } catch {

@@ -87,6 +87,8 @@ npm run poster           # follow the feed and post state
 npm run verify           # replay everything on chain and check it
 ```
 
+**Live:** https://prjx283-lgtm.github.io/wetware/ · the verifier at [/live/](https://prjx283-lgtm.github.io/wetware/live/) · the [paper](https://prjx283-lgtm.github.io/wetware/paper/)
+
 ## Read first
 
 - [docs/TLDR.md](docs/TLDR.md), one page

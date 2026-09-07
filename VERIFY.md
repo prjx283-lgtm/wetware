@@ -67,8 +67,9 @@ where the price goes, only that it moved.
 
 ## In the browser
 
-`npm run site` and open `http://localhost:8787`. The same replay runs in a Web
-Worker in your browser and shows the badge going green, or red.
+Open https://prjx283-lgtm.github.io/wetware/live/ (or `npm run site` locally).
+The same replay runs in a Web Worker in your browser and shows the badge going
+green, or red.
 
 ## Mainnet
 

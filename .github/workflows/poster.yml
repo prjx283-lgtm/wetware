@@ -16,6 +16,11 @@ on:
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
+    inputs:
+      alarm_test:
+        description: 'Fire the gas alarm on purpose to prove it reaches a human. The run fails by design.'
+        type: boolean
+        default: false
 
 concurrency:
   group: poster
@@ -32,7 +37,8 @@ jobs:
       FEED_ADDRESS: ${{ vars.WETWARE_FEED_ADDRESS || '0x0D9858cAaeabbe85a82C57d47F43bb5B78199a1A' }}
       STATE_ADDRESS: ${{ vars.WETWARE_STATE_ADDRESS || '0x395E2b16354918e9aA3c9382E42E9de33Efb7EDe' }}
       FROM_BLOCK: ${{ vars.WETWARE_FROM_BLOCK || '114823883' }}
-      GAS_ALARM_ETH: ${{ vars.WETWARE_GAS_ALARM_ETH || '0.002' }}
+      GAS_ALARM_ETH: ${{ inputs.alarm_test && '1000' || vars.WETWARE_GAS_ALARM_ETH || '0.002' }}
+      ALARM_TEST: ${{ inputs.alarm_test && '1' || '' }}
       ALERT_WEBHOOK_URL: ${{ secrets.ALERT_WEBHOOK_URL }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

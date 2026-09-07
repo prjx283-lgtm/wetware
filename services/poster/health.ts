@@ -78,7 +78,9 @@ export class Alarm {
   /** Log loudly always; deliver externally at most once per interval. */
   async raise(message: string): Promise<void> {
     console.error(`\n[wetware] !!! ALARM !!! ${message}\n`);
-    if (process.env.RUN_ONCE === '1') {
+    if (process.env.ALARM_TEST === '1') {
+      // A deliberate test: always deliver, so the operator can prove the path.
+    } else if (process.env.RUN_ONCE === '1') {
       // No memory between runs on a cron host, so throttle by the clock:
       // deliver only on the first run of each hour.
       if (new Date().getUTCMinutes() >= 10) return;

@@ -65,4 +65,12 @@ a:hover { border-bottom-color: var(--accent); }
 .doc ul, .doc ol { padding-left: 22px; margin: 0 0 14px; }
 .doc li { margin-bottom: 6px; }
 .doc a { border-bottom-color: rgba(184,255,92,.3); }
-@media (max-width: 900px) { .doc-wrap { grid-template-columns: 1fr; } .toc { display: none; } .doc { font-size: 16px; } }
+@media (max-width: 900px) {
+  .shell-nav { padding: 12px 16px; gap: 10px; }
+  .shell-nav .brand { font-size: 20px; }
+  .shell-nav nav { gap: 0; }
+  .shell-nav nav a { padding: 6px 7px; font-size: 11px; letter-spacing: .04em; }
+  .shell-foot { flex-direction: column; gap: 8px; }
+  .doc-wrap { grid-template-columns: 1fr; padding-top: 24px; } .toc { display: none; } .doc { font-size: 16px; }
+  .doc h1 { font-size: 40px; }
+}

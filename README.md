@@ -44,8 +44,8 @@ Determinism here is deliberate work, not an accident:
   port matches it tick for tick.
 - The stimulus sequence is derived from `keccak256(roundId, answer, previous)`
   rather than a random number generator, so it is reproducible from public data.
-  The original DeepWorm used unseeded randomness, which meant nobody could ever
-  check its work.
+  An unseeded random number here would make every state that follows it
+  unreproducible, and the verification claim meaningless.
 - Position uses a fixed-point sine table, not `Math.sin`, because libm is not
   bit-identical across platforms and would break replay.
 
@@ -140,7 +140,7 @@ default. It returns 503 while the gas alarm is on. The alarm fires when the
 poster's balance drops below `GAS_ALARM_ETH` (default 0.002) and is delivered
 to `ALERT_WEBHOOK_URL` (POST `{"text"}`, Slack and Discord webhooks work) and
 to Telegram if `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` are set, at most
-once an hour. Set at least one; an alarm nobody hears is DeepWorm again.
+once an hour. Set at least one; an alarm nobody hears is not an alarm.
 
 **Where it runs now:** GitHub Actions, `.github/workflows/poster.yml`, every
 five minutes. Each run mirrors any new round into the testnet mock, restores
@@ -256,5 +256,3 @@ constant.
 - [nematoduino](https://github.com/nategri/nematoduino) and
   [nanotode](https://github.com/nategri/nanotode) by nategri, GPL-2.0
 - [OpenWorm](http://openworm.org) for the connectome
-- [DeepWorm](https://docs.deepworm.xyz) for proving the idea works, and for
-  showing exactly how it dies if nobody keeps the lights on

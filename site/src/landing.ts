@@ -71,7 +71,7 @@ async function status(): Promise<void> {
     $('s-tick').textContent = tick.toLocaleString();
     $('s-feed').textContent = `${net.symbol} ${price}, updated ${describeAge(age)}`;
     $('s-hash').textContent = tick === 0 ? 'no state yet' : hash;
-    $('status-title').textContent = asleep ? 'The market is closed. The worm is asleep.' : 'Awake. The market is open.';
+    $('status-title').textContent = asleep ? 'Dauer. The market is closed, the worm is asleep.' : 'Awake. The market is open.';
     card.classList.add(asleep ? 'asleep' : 'awake');
   } catch (e) {
     $('status-title').textContent = 'Could not read the chain';

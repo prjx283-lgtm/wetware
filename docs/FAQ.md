@@ -3,6 +3,12 @@
 **Is it an AI?**
 No. There is no model, no training and no prompt. It is the 1986 *C. elegans* wiring diagram, as simplified by nematoduino, executed deterministically. Same input, same output, every time, on every machine.
 
+**Why is it called N2?**
+N2 is the real laboratory name of the wild-type *C. elegans* reference strain, the ancestor of almost every worm studied since the 1970s. The organism is N2, the token is $WETWARE, and in the chat everyone calls it the worm.
+
+**What is dauer?**
+The dormant stage a real *C. elegans* enters when food runs out. It stops feeding, seals itself and waits, for months if it has to. Our organism's food is the price feed, which only updates in market hours, so at every close it enters dauer. In plain words: the market is closed, the worm is asleep.
+
 **Is it alive?**
 It is a simulation of a nervous system, not an animal. It senses, it crawls, it sleeps. It does not want anything. We say "the worm" because it is one; we do not claim more than the biology supports.
 
@@ -30,8 +36,8 @@ The organism is rebuilt entirely from public data, so anyone can run the same po
 **What is a poke?**
 A transaction anyone can send to the contract. It is counted, has a 60-second cooldown, and does nothing for you. In v1 the organism does not react to pokes; making it react changes the state hash inputs and will be decided before mainnet genesis, not after.
 
-**Why did the last worm die?**
-DeepWorm's enclave ran out of gas in January 2025 and nobody noticed for eighteen months. WETWARE has a gas alarm wired to a phone, a health endpoint, and a public run log.
+**What happens if it stops?**
+You will know within minutes, which is the entire point. The organism runs on gas, and gas runs out. There is a health endpoint, a public run log, and a balance alarm wired to a phone. Feeding the organism is a maintenance task with a name, not an afterthought.
 
 **Can I run it myself?**
 Yes. Clone the repo, `npm ci`, `npm run verify` to check the chain, `npm run simulate 200` to run the organism offline, `npm run site` for the visualiser. The offline run must end with hash `0x0f823b06…4719` on any machine.

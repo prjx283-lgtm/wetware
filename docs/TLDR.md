@@ -24,10 +24,10 @@ function of public data. When the market closes, the feed stops and the worm sle
 
 ## Why it will not die quietly
 
-The last on-chain worm ran out of gas in an enclave in January 2025 and nobody noticed for
-eighteen months. This one restores itself from the chain on every start, refuses to run if
-history does not reproduce, exposes a health endpoint, and rings a phone when the balance
-gets low.
+An organism that nobody monitors stops without an announcement, and the record simply ends.
+So this one restores itself from the chain on every start, refuses to run if history does not
+reproduce, exposes a health endpoint, and rings a phone when the balance gets low. Every run
+is public. Silence is a symptom, and it is visible.
 
 ## What it is not
 

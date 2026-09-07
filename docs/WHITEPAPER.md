@@ -18,7 +18,7 @@ Two things are true at once. Everything on a blockchain that calls itself alive 
 
 *C. elegans* is a one-millimetre nematode with 302 neurons. It is the only organism whose connectome, every neuron and every synapse, has been fully mapped [1]. The OpenWorm project made that connectome computable [2], and nematoduino [3] reduced it to a model small enough to run on a microcontroller: integer neuron states, a fixed firing threshold, a handful of kilobytes of ROM.
 
-DeepWorm put a similar organism on chain in an enclave and demonstrated that people want to watch, and poke, a worm that lives on a blockchain. It also demonstrated the failure mode: its enclave ran out of gas in January 2025 and nobody noticed for eighteen months. An organism nobody can verify is trusted until it quietly stops, and an organism nobody monitors stops quietly.
+Running such a model in public raises two problems that are easy to state and easy to get wrong. An organism whose computation nobody can reproduce is trusted rather than checked, which means it is trusted right up until it quietly stops. And an organism nobody monitors does stop quietly: there is no announcement, only a record that ends.
 
 WETWARE takes the connectome, gives it a stimulus nobody controls, and makes every state it reaches reproducible by anyone. The experiment is not "can a worm trade". The worm does not know what NVDA is. The experiment is whether a living system can be run in public with no trust required.
 
@@ -60,7 +60,7 @@ with BASE_TICKS = 6, TICKS_PER_BP = 4 and MAX_TICKS = 400. A flat print still pr
 
 #### 3.3 The stimulus sequence
 
-DeepWorm chose each stimulus with an unseeded random number, which meant nobody could ever check its work. WETWARE derives the sequence from the round itself:
+An unseeded random number here would be fatal to the whole claim: the sequence of stimuli determines the nervous system, so if it cannot be reproduced, neither can any state that follows from it. WETWARE derives the sequence from the round itself:
 
   seed = keccak256( pad(roundId) ‖ pad(answer) ‖ pad(previousAnswer) )
 
@@ -134,7 +134,7 @@ The poster, the command-line verifier and the browser share one simulator and on
 
 ### 8. Liveness
 
-The previous on-chain worm died because its enclave ran out of gas and nobody was watching. WETWARE's liveness design is built around that failure.
+The most likely way this organism ends is not an attack. It is an unpaid gas bill and nobody watching. The liveness design is built around that.
 
 **Restart safety.** On every start, the poster replays the full recorded history from genesis and refuses to run if the history does not reproduce or if its replayed hash disagrees with the contract's current state. A restart can never fork the organism. If a post fails after the organism has advanced, the poster discards its state and rebuilds from chain rather than feed the same round twice.
 

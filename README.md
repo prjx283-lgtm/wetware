@@ -87,6 +87,13 @@ npm run poster           # follow the feed and post state
 npm run verify           # replay everything on chain and check it
 ```
 
+## Read first
+
+- [docs/TLDR.md](docs/TLDR.md), one page
+- [docs/WHITEPAPER.md](docs/WHITEPAPER.md), the full design: biology, stimulus derivation, determinism, trust model, liveness, v2
+- [docs/FAQ.md](docs/FAQ.md)
+- [VERIFY.md](VERIFY.md), check the organism yourself in one command
+
 ## The live site
 
 `site/` is a page that runs the simulator in the visitor's own browser and

@@ -1,5 +1,23 @@
 # WETWARE: Frequently asked questions
 
+## Start here
+
+N2 is a worm's nervous system, run as a program. Real wiring, 299 neurons, from the most studied animal in biology. Its only input is the price of NVDA. Every time the price prints, the worm gets a jolt and crawls. Small print, small jolt. Big print, big jolt. Every step is written to Robinhood Chain, and anyone can re-run the worm's whole life to check that nobody cheated. When the market closes, it sleeps.
+
+**Why a worm?** Because *C. elegans* is the only animal whose complete nervous system has been mapped. It is real, not designed.
+
+**Why a stock price?** A worm needs a world. A price feed is a world nobody can fake: Chainlink publishes it on chain and it moves on its own.
+
+**Why on chain?** So the worm's life is a public record nobody can edit.
+
+**Why trust it?** You don't have to. Re-run it and you get the same answer, or you catch the lie at the exact step.
+
+**Why the token?** Holders eat what the worm eats: $WETWARE's taxes pay holders in tokenized NVDA, around the clock. The worm sleeps. The rewards don't.
+
+**Where does it go?** Mainnet, then a sealed enclave, then no operator at all.
+
+## Everything else
+
 **Is it an AI?**
 No. There is no model, no training and no prompt. It is the 1986 *C. elegans* wiring diagram, as simplified by nematoduino, executed deterministically. Same input, same output, every time, on every machine.
 

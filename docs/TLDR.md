@@ -1,6 +1,11 @@
 # WETWARE, in one page
 
-**A real nervous system eating a stock price, on chain, and you can check every tick.**
+**A real worm's nervous system, fed by the price of NVDA, living on chain where anyone can check it.**
+
+N2 is a worm's nervous system, run as a program. Its only input is the price of NVDA.
+Every time the price prints, the worm gets a jolt and crawls. Small print, small jolt.
+Big print, big jolt. Every step is written to Robinhood Chain, and anyone can re-run
+the worm's whole life to check that nobody cheated. When the market closes, it sleeps.
 
 ## What it is
 

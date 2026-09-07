@@ -1,5 +1,7 @@
 # WETWARE
 
+[![verify](https://github.com/prjx283-lgtm/wetware/actions/workflows/verify.yml/badge.svg)](https://github.com/prjx283-lgtm/wetware/actions/workflows/verify.yml) [![poster](https://github.com/prjx283-lgtm/wetware/actions/workflows/poster.yml/badge.svg)](https://github.com/prjx283-lgtm/wetware/actions/workflows/poster.yml)
+
 A *C. elegans* nervous system, running on a stock price, recorded on Robinhood Chain.
 
 299 neurons and 98 muscles, wired from the OpenWorm connectome. Its only sense of
@@ -118,8 +120,18 @@ to `ALERT_WEBHOOK_URL` (POST `{"text"}`, Slack and Discord webhooks work) and
 to Telegram if `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` are set, at most
 once an hour. Set at least one; an alarm nobody hears is DeepWorm again.
 
-`Dockerfile` and `fly.toml` run it on Fly.io as one always-on machine that
-restarts on failure. The key is a Fly secret, set by a human:
+**Where it runs now:** GitHub Actions, `.github/workflows/poster.yml`, every
+five minutes. Each run mirrors any new round into the testnet mock, restores
+the organism from the chain, posts if the feed advanced, and exits
+(`RUN_ONCE=1`). Nothing stays resident, so there is nothing to run out of
+memory or hang, and every run is a restart proof. A low balance fails the run,
+so the workflow badge above is the alarm. Keys are repository secrets
+`POSTER_PRIVATE_KEY` and `MIRROR_PRIVATE_KEY`. The cost is cadence: GitHub's
+cron is five minutes at best and often late.
+
+**Resident alternative:** `Dockerfile` and `fly.toml` run it on Fly.io as one
+always-on machine that restarts on failure. The key is a Fly secret, set by a
+human:
 
 ```
 flyctl auth login

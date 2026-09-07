@@ -94,7 +94,7 @@ npm run verify           # replay everything on chain and check it
 - [docs/TLDR.md](docs/TLDR.md), one page
 - [docs/WHITEPAPER.md](docs/WHITEPAPER.md), the full design: biology, stimulus derivation, determinism, trust model, liveness, v2
 - [docs/FAQ.md](docs/FAQ.md)
-- [VERIFY.md](VERIFY.md), check the organism yourself in one command
+- [VERIFY.md](VERIFY.md), check the organism yourself in one command (repo only, by design)
 
 ## The live site
 
@@ -110,11 +110,13 @@ npm run site            # bundle with esbuild and serve on http://localhost:8787
 npm run site:build      # bundle only
 ```
 
-The site has five pages, all built by `site/build.mjs` into `site/dist`:
-`/` (landing, live status from the chain), `/live/` (the verifier), `/paper/`,
-`/faq/` and `/verify/`. The last three are rendered from `docs/WHITEPAPER.md`,
-`docs/FAQ.md` and `VERIFY.md`, so the site cannot say something the repo does
-not. Source pages live in `site/pages/`, scripts in `site/src/`.
+The site has four pages, all built by `site/build.mjs` into `site/dist`:
+`/` (landing, live status from the chain), `/live/` (the verifier), `/paper/`
+and `/faq/`. The last two are rendered from `docs/WHITEPAPER.md` and
+`docs/FAQ.md`, so the site cannot say something the repo does not. The
+command-line verification lives in `VERIFY.md` and the paper, on purpose: on
+the site, the badge on the live page carries the proof. Source pages live in
+`site/pages/`, scripts in `site/src/`.
 
 On the live page, `?network=testnet` (default) or `?network=mainnet` picks the
 contract from `site/src/config.ts`. `?fixture=testnet-honest` and

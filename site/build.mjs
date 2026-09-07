@@ -52,7 +52,6 @@ writeFileSync(join(dist, '.nojekyll'), '');
 const NAV = [
   ['live/', 'Live'],
   ['paper/', 'Paper'],
-  ['verify/', 'Verify'],
   ['faq/', 'FAQ'],
 ];
 
@@ -129,12 +128,6 @@ docPage({
   title: 'WETWARE: FAQ',
   description: 'Is it an AI? Does it predict NVDA? What do you have to trust? Answers, in the order people ask.',
   out: 'faq', current: 'faq/',
-});
-docPage({
-  src: join(root, 'VERIFY.md'),
-  title: 'WETWARE: Verify it yourself',
-  description: 'Node 22, one command, five minutes. Replay every recorded state from genesis and compare hashes with the chain.',
-  out: 'verify', current: 'verify/',
 });
 
 // The live verifier keeps its own markup and styles; it only gains the shell.

@@ -120,19 +120,19 @@ function docPage({ src, title, description, out, current }) {
 
 docPage({
   src: join(root, 'docs', 'WHITEPAPER.md'),
-  title: 'WETWARE — Whitepaper',
+  title: 'WETWARE: Whitepaper',
   description: 'A verifiable nervous system fed by a tokenized equity price. Biology, stimulus derivation, determinism, trust model, liveness, and the road to no operator.',
   out: 'paper', current: 'paper/',
 });
 docPage({
   src: join(root, 'docs', 'FAQ.md'),
-  title: 'WETWARE — FAQ',
+  title: 'WETWARE: FAQ',
   description: 'Is it an AI? Does it predict NVDA? What do you have to trust? Answers, in the order people ask.',
   out: 'faq', current: 'faq/',
 });
 docPage({
   src: join(root, 'VERIFY.md'),
-  title: 'WETWARE — Verify it yourself',
+  title: 'WETWARE: Verify it yourself',
   description: 'Node 22, one command, five minutes. Replay every recorded state from genesis and compare hashes with the chain.',
   out: 'verify', current: 'verify/',
 });
@@ -144,7 +144,7 @@ docPage({
   const body = page.match(/<body>([\s\S]*?)<script/)?.[1] ?? '';
   mkdirSync(join(dist, 'live'), { recursive: true });
   writeFileSync(join(dist, 'live', 'index.html'), layout({
-    title: 'WETWARE — Live',
+    title: 'WETWARE: Live',
     description: 'The worm, crawling, verified in your browser against Robinhood Chain in real time.',
     body: body + '<script type="module" src="../assets/main.js"></script>',
     rel: '../', current: 'live/', head, bodyClass: 'live',
@@ -157,7 +157,7 @@ docPage({
   const head = page.match(/<style>[\s\S]*?<\/style>/)?.[0] ?? '';
   const body = page.match(/<body>([\s\S]*?)<\/body>/)?.[1] ?? '';
   writeFileSync(join(dist, 'index.html'), layout({
-    title: 'WETWARE — a nervous system eating a stock price',
+    title: 'WETWARE: a nervous system eating a stock price',
     description: 'A real C. elegans nervous system, 299 neurons, fed by the NVDA price feed on Robinhood Chain. Every state on chain, every tick verifiable in your browser.',
     body, rel: './', current: '', head, bodyClass: 'landing',
   }));

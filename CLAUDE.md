@@ -1,4 +1,4 @@
-# WETWARE — project instructions
+# WETWARE: project instructions
 
 A *C. elegans* nervous system simulated off-chain, stimulated by a tokenized
 equity's Chainlink price feed, with its state recorded on Robinhood Chain.

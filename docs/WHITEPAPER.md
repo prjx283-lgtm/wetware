@@ -70,7 +70,7 @@ Successive 32-byte blocks are produced by hashing the previous block with a coun
 
 Position is integrated from muscle drive using integer arithmetic only. Heading is stored in tenths of a degree (3 600 units per turn) and updated by ⌊(right − left) / TURN_DIVISOR⌋ with TURN_DIVISOR = 2. Speed is ⌊(left + right) / 2 / SPEED_DIVISOR⌋ with SPEED_DIVISOR = 16. Displacement uses a fixed-point sine table with 3 600 entries scaled by 10⁶, never `Math.sin`, because libm is not bit-identical across platforms and a floating-point heading would break replay.
 
-TURN_DIVISOR was set by measurement: across long runs the median absolute left–right difference is 6 and the maximum 66, so a divisor of 64 would truncate almost every turn to zero. At 2 the track's aspect ratio is near 1.0, meaning the organism explores both axes, as a real nematode does.
+TURN_DIVISOR was set by measurement: across long runs the median absolute left-right difference is 6 and the maximum 66, so a divisor of 64 would truncate almost every turn to zero. At 2 the track's aspect ratio is near 1.0, meaning the organism explores both axes, as a real nematode does.
 
 #### 3.5 Consensus constants
 
@@ -189,7 +189,7 @@ WETWARE is released under GPL-2.0-or-later. The simulator is forked from nematod
 
 ### References
 
-1. White, J. G., Southgate, E., Thomson, J. N., Brenner, S. (1986). The structure of the nervous system of the nematode *Caenorhabditis elegans*. *Philosophical Transactions of the Royal Society B*, 314(1165), 1–340.
+1. White, J. G., Southgate, E., Thomson, J. N., Brenner, S. (1986). The structure of the nervous system of the nematode *Caenorhabditis elegans*. *Philosophical Transactions of the Royal Society B*, 314(1165), 1-340.
 2. OpenWorm project. https://openworm.org
 3. nategri. nematoduino: an Arduino UNO-compatible robotic simulation of the *C. elegans* nematode. https://github.com/nategri/nematoduino
 4. Chainlink Data Feeds documentation. https://docs.chain.link/data-feeds

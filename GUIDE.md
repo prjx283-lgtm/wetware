@@ -7,7 +7,7 @@ Total time: about 40 minutes to a live worm on testnet.
 
 ---
 
-## Part 0 — Open the Terminal
+## Part 0: Open the Terminal
 
 Terminal is the black window where you type commands. On your Mac:
 
@@ -30,7 +30,7 @@ Nothing visible happens. That is correct. You are now "inside" the folder.
 
 ---
 
-## Part 1 — Check the worm is real
+## Part 1: Check the worm is real
 
 Before trusting anything, make the code prove itself.
 
@@ -64,7 +64,7 @@ If both say `fail 0`, everything is healthy.
 
 ---
 
-## Part 2 — Watch the worm move
+## Part 2: Watch the worm move
 
 This runs the worm on fake price data. No internet, no money, no risk. Just to
 see it breathe.
@@ -86,11 +86,11 @@ state hash      0x0f823b06...
 
 **How to read it:**
 
-- **ticks** — how many times the nervous system fired. More price movement, more ticks.
-- **stimulus mix** — 80% food, 20% pain. That is the worm's world.
-- **track** — the size of the area it crawled. Aspect near 1.0 means it wandered
+- **ticks**: how many times the nervous system fired. More price movement, more ticks.
+- **stimulus mix**: 80% food, 20% pain. That is the worm's world.
+- **track**: the size of the area it crawled. Aspect near 1.0 means it wandered
   in both directions like a real worm instead of walking in a straight line.
-- **state hash** — a fingerprint of the worm's entire nervous system. This is the
+- **state hash**: a fingerprint of the worm's entire nervous system. This is the
   number that makes the project honest. Anyone re-running the same prices gets
   the same fingerprint, or somebody cheated.
 
@@ -99,7 +99,7 @@ further.
 
 ---
 
-## Part 3 — Make a wallet for the worm
+## Part 3: Make a wallet for the worm
 
 The worm needs its own wallet to sign its movements. This is **not** your
 personal wallet. It holds a few dollars of gas and nothing else.
@@ -134,7 +134,7 @@ export POSTER_PRIVATE_KEY=0xabcd...
 
 ---
 
-## Part 4 — Get free test money
+## Part 4: Get free test money
 
 Testnet is a practice version of the blockchain where the money is fake. Always
 practise here first.
@@ -147,7 +147,7 @@ It gives you test ETH for gas, and test tokenized stocks. Wait about a minute.
 
 ---
 
-## Part 5 — Put the worm's body on the blockchain
+## Part 5: Put the worm's body on the blockchain
 
 This creates the contract that will hold the worm's state.
 
@@ -182,7 +182,7 @@ export STATE_ADDRESS=0x5678...
 
 ---
 
-## Part 6 — Wake the worm up
+## Part 6: Wake the worm up
 
 ```bash
 NETWORK=testnet FEED=NVDA npm run poster
@@ -225,7 +225,7 @@ To stop it, press `Ctrl` + `C`.
 
 ---
 
-## Part 7 — Prove the worm is honest
+## Part 7: Prove the worm is honest
 
 This is the step that makes the project different from every "trust me" project.
 
@@ -250,7 +250,7 @@ moment you did it. Put the command in your pinned post.
 
 ---
 
-## Part 8 — Go live on the real chain
+## Part 8: Go live on the real chain
 
 Only after testnet has run for a day or two without problems.
 
@@ -281,7 +281,7 @@ everyone. Decide on them before mainnet, then never touch them.
 
 ---
 
-## Part 9 — Launch the token
+## Part 9: Launch the token
 
 Separate from the code, and it happens on the o1 launchpad.
 
@@ -308,7 +308,7 @@ anyone cares.
 
 ---
 
-## Part 10 — Keep it alive
+## Part 10: Keep it alive
 
 DeepWorm did not get rugged. It got abandoned. Its brain stopped posting on
 19 January 2025 and its wallet ran out of gas, and that is the whole story of how

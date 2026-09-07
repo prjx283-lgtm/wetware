@@ -1,4 +1,4 @@
-# WETWARE — Frequently asked questions
+# WETWARE: Frequently asked questions
 
 **Is it an AI?**
 No. There is no model, no training and no prompt. It is the 1986 *C. elegans* wiring diagram, as simplified by nematoduino, executed deterministically. Same input, same output, every time, on every machine.

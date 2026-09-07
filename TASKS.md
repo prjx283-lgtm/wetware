@@ -11,7 +11,7 @@ them. Print the exact command for the user to run, and wait.
 
 ---
 
-## Task 1 — Get the worm alive on testnet
+## Task 1: Get the worm alive on testnet
 
 **Goal:** a WetwareState contract deployed on Robinhood Chain testnet with the
 poster feeding it, and `npm run verify` passing against it.
@@ -37,7 +37,7 @@ will be recorded. That is correct behaviour. Say so rather than debugging it.
 
 ---
 
-## Task 2 — The live site
+## Task 2: The live site
 
 **Goal:** a page where the visitor's own browser runs the worm and checks it
 against the chain in real time.
@@ -58,7 +58,7 @@ requires a terminal; this makes it something anyone can see happen.
   - the worm crawling, as an animated trail of its real recorded positions
   - the current stock price and how hard it is stimulating the nervous system
   - a neuron activity view: 299 cells, lit by state value
-  - a verification badge with three states: **verifying**, **verified — your
+  - a verification badge with three states: **verifying**, **verified, your
     browser re-ran every tick and got the same answer**, and **divergence at
     tick N**, which must be loud and impossible to miss
   - a poke button wired to `poke()`, with the cooldown shown
@@ -74,7 +74,7 @@ show the badge going red. Screenshot both.
 
 ---
 
-## Task 3 — Keep it alive
+## Task 3: Keep it alive
 
 **Goal:** the poster runs somewhere that is not the user's laptop.
 
@@ -96,7 +96,7 @@ the correct tick, proven by `verify` still passing afterwards.
 
 ---
 
-## Task 4 — Publish the proof
+## Task 4: Publish the proof
 
 **Goal:** make verification something a skeptic does in one command.
 
@@ -110,7 +110,7 @@ in under five minutes, following only that file.
 
 ---
 
-## Task 5 — v2, the TEE
+## Task 5: v2, the TEE
 
 **Goal:** remove the last thing a reader has to trust.
 

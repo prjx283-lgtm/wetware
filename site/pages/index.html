@@ -1,16 +1,20 @@
 <style>
-  .hero { position: relative; z-index: 1; min-height: calc(100vh - 57px); display: grid; align-items: end; padding: 0 clamp(16px, 3vw, 40px) 56px; overflow: hidden; }
-  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
-  .hero-inner { max-width: 1320px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(300px, .8fr); gap: 32px; align-items: end; }
-  .hero h1 { font-family: var(--display); font-weight: 300; font-size: clamp(44px, 7.2vw, 108px); line-height: .92; letter-spacing: -0.035em; margin: 0 0 18px; max-width: 12ch; }
+  .hero { position: relative; z-index: 1; min-height: calc(100vh - 57px); display: grid; align-items: center; padding: 40px clamp(16px, 3vw, 40px) 48px; }
+  .hero-inner { max-width: 1320px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(320px, 1fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
+  .hero h1 { font-family: var(--display); font-weight: 300; font-size: clamp(44px, 5.6vw, 88px); line-height: .94; letter-spacing: -0.035em; margin: 0 0 20px; max-width: 13ch; }
   .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero p.lede { font-family: var(--display); font-weight: 300; font-size: clamp(17px, 1.7vw, 22px); color: var(--muted); max-width: 58ch; margin: 0 0 26px; }
+  .hero p.lede { font-family: var(--display); font-weight: 300; font-size: clamp(17px, 1.5vw, 21px); color: var(--muted); max-width: 54ch; margin: 0 0 26px; }
   .hero p.lede b { color: var(--text); font-weight: 600; }
   .cta { display: flex; gap: 10px; flex-wrap: wrap; }
   .cta a { border: 1px solid rgba(231,240,226,.18); padding: 12px 18px; border-radius: 4px; color: var(--text); font-size: 13px; letter-spacing: .04em; transition: transform .15s, background .3s, border-color .3s; }
   .cta a.primary { background: var(--accent); color: #0b120a; border-color: var(--accent); font-weight: 600; }
   .cta a:hover { transform: translateY(-1px); border-color: var(--accent); }
-  .status { border: 1px solid var(--rule); background: rgba(15,23,17,.75); backdrop-filter: blur(6px); border-radius: 6px; padding: 16px 18px; font-size: 12px; }
+  .plate { position: relative; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: radial-gradient(closest-side, var(--agar), var(--ink) 130%); height: clamp(260px, 34vw, 380px); margin-bottom: 14px; }
+  .plate canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .plate .tag { position: absolute; left: 14px; top: 12px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .plate .tag b { color: var(--text); font-weight: 600; }
+  .plate .scale { position: absolute; right: 14px; bottom: 12px; font-size: 11px; color: var(--muted); }
+  .status { border: 1px solid var(--rule); background: rgba(15,23,17,.75); border-radius: 6px; padding: 16px 18px; font-size: 12px; }
   .status h2 { margin: 0 0 10px; font-family: var(--display); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
   .status dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; }
   .status dt { color: var(--muted); }
@@ -54,9 +58,12 @@
   .credits { color: var(--muted); font-size: 13px; max-width: 80ch; }
   @media (max-width: 900px) {
     /* On a phone the worm gets its own band above the words instead of crawling behind them. */
-    .hero { min-height: 0; display: block; padding: 0 clamp(16px, 4vw, 28px) 40px; }
-    .hero canvas { position: relative; display: block; inset: auto; width: 100%; height: 230px; margin: 0 0 8px; z-index: 0; }
+    .hero { min-height: 0; padding: 20px clamp(16px, 4vw, 28px) 40px; }
     .hero-inner { grid-template-columns: 1fr; gap: 22px; }
+    /* Phone order: the worm, then the words, then the status card. */
+    .hero-inner > div:last-child { display: contents; }
+    .plate { order: -1; height: 220px; margin-bottom: 0; }
+    .status { order: 1; }
     .hero h1 { font-size: clamp(38px, 11vw, 60px); margin-bottom: 14px; }
     .hero p.lede { font-size: 16.5px; line-height: 1.5; }
     .cta a { flex: 1 1 auto; text-align: center; }
@@ -69,7 +76,6 @@
 </style>
 <body>
 <section class="hero">
-  <canvas id="hero-worm" aria-hidden="true"></canvas>
   <div class="hero-inner">
     <div>
       <h1>A real nervous system <em>eating</em> a stock price.</h1>
@@ -78,6 +84,12 @@
         <a class="primary" href="live/">Watch it live</a>
         <a href="paper/">Read the paper</a>
       </div>
+    </div>
+    <div>
+    <div class="plate" aria-hidden="true">
+      <canvas id="hero-worm"></canvas>
+      <div class="tag"><b>C. elegans</b> · 299 neurons · specimen view</div>
+      <div class="scale">not to scale</div>
     </div>
     <div class="status" id="status">
       <h2><span class="pulse"></span><span id="status-title">Reading the chain…</span></h2>
@@ -88,6 +100,7 @@
         <dt>feed</dt><dd id="s-feed">…</dd>
         <dt>state hash</dt><dd class="hash" id="s-hash">…</dd>
       </dl>
+    </div>
     </div>
   </div>
 </section>

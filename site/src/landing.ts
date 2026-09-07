@@ -108,16 +108,15 @@ function hero(): void {
     // Faint grid.
     ctx.strokeStyle = 'rgba(184,255,92,0.045)';
     ctx.lineWidth = 1;
-    const step = 64;
+    const step = Math.max(36, Math.round(Math.min(w, h) / 7));
     for (let x = (w * 0.5) % step; x < w; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
     for (let y = (h * 0.5) % step; y < h; y += step) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
 
-    // Body path: a slow drift across the upper right on wide screens; on a
-    // phone the canvas is its own band, so the worm sits in the middle of it.
-    const narrow = w < 900;
-    const len = narrow ? Math.min(w * 0.8, 360) : Math.min(w * 0.42, 560);
-    const cx = narrow ? w * 0.5 + Math.sin(t * 0.07) * w * 0.04 : w * 0.66 + Math.sin(t * 0.07) * w * 0.05;
-    const cy = narrow ? h * 0.5 + Math.cos(t * 0.05) * h * 0.08 : h * 0.40 + Math.cos(t * 0.05) * h * 0.06;
+    // Body path: the canvas is the dish, so the worm lives in the middle of
+    // it and drifts slowly, like a specimen under a microscope.
+    const len = Math.min(w * 0.78, 520);
+    const cx = w * 0.5 + Math.sin(t * 0.07) * w * 0.05;
+    const cy = h * 0.52 + Math.cos(t * 0.05) * h * 0.08;
     const angle = -0.35 + Math.sin(t * 0.04) * 0.25;
     const amp = len * 0.085;
     const point = (u: number, lateral = 0) => {

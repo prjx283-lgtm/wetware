@@ -42,10 +42,6 @@
   .quote em { font-style: italic; color: var(--accent); }
   .aside { color: var(--muted); max-width: 70ch; font-size: 14px; }
   .aside b { color: var(--text); font-weight: 600; }
-  .nots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  .not h3 { font-family: var(--display); font-weight: 600; font-size: 19px; margin: 0 0 6px; }
-  .not h3::before { content: "✕ "; color: var(--danger); }
-  .not p { margin: 0; color: var(--muted); font-size: 13px; }
   .road { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--rule); }
   .road div { padding: 18px 16px 18px 0; border-right: 1px solid var(--rule); padding-left: 16px; }
   .road div:first-child { padding-left: 0; }
@@ -56,6 +52,26 @@
   .road h3 { font-family: var(--display); font-weight: 600; font-size: 20px; margin: 0 0 6px; }
   .road p { margin: 0; color: var(--muted); font-size: 13px; }
   .credits { color: var(--muted); font-size: 13px; max-width: 80ch; }
+  section.band > h2 span { display: block; margin-top: 6px; font-family: var(--display); font-weight: 300; font-style: italic; letter-spacing: 0; text-transform: none; color: var(--muted); font-size: 16px; }
+  /* The roadmap as a worm track. */
+  .track { position: relative; width: 100%; aspect-ratio: 1200 / 340; margin: 120px 0 40px; }
+  .track svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .track path.future { fill: none; stroke: rgba(231,240,226,.18); stroke-width: 1.5; stroke-dasharray: 5 7; vector-effect: non-scaling-stroke; }
+  .track path.done { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 8px rgba(184,255,92,.7)); }
+  .track circle.node { fill: var(--ink); stroke: var(--text); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .track circle.node.done { fill: var(--accent); stroke: var(--accent); }
+  .track circle.node.next { stroke: var(--warm); }
+  .track #track-head { fill: none; stroke: var(--text); stroke-width: 3; stroke-linecap: round; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 6px rgba(184,255,92,.6)); }
+  .track-labels { position: absolute; inset: 0; pointer-events: none; }
+  .track-label { position: absolute; width: 200px; pointer-events: auto; }
+  .track-label.above { transform: translate(-50%, calc(-100% - 22px)); }
+  .track-label.below { transform: translate(-50%, 22px); }
+  .track-label .tag { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .track-label .tag.done { color: var(--accent); }
+  .track-label .tag.next { color: var(--warm); }
+  .track-label h3 { font-family: var(--display); font-weight: 600; font-size: 18px; margin: 0 0 4px; line-height: 1.1; }
+  .track-label p { margin: 0; color: var(--muted); font-size: 11.5px; line-height: 1.45; }
+  .road-mobile { display: none; }
   @media (max-width: 900px) {
     /* On a phone the worm gets its own band above the words instead of crawling behind them. */
     .hero { min-height: 0; padding: 20px clamp(16px, 4vw, 28px) 40px; }
@@ -69,8 +85,10 @@
     .cta a { flex: 1 1 auto; text-align: center; }
     .status dl { grid-template-columns: 1fr; gap: 2px 0; }
     .status dt { margin-top: 8px; }
-    .steps, .claims, .nots, .road { grid-template-columns: 1fr; }
+    .steps, .claims, .road { grid-template-columns: 1fr; }
     .road div { border-right: 0; border-bottom: 1px solid var(--rule); padding-left: 0; }
+    .track { display: none; }
+    .road-mobile { display: grid; }
     .quote { font-size: 30px; }
   }
 </style>
@@ -129,22 +147,23 @@
   <p class="aside">This one restores itself from the chain on every start and refuses to run if history does not reproduce. It exposes a health endpoint, publishes every run, and <b>rings a phone</b> when the balance drops. When the market closes, it sleeps, and says so.</p>
 </section>
 
-<section class="band">
-  <h2>What it is not</h2>
-  <div class="nots">
-    <div class="not"><h3>An AI</h3><p>No model, no training, no prompt. A 1986 wiring diagram, executed deterministically.</p></div>
-    <div class="not"><h3>A trading signal</h3><p>The heading carries no information about where the price goes. It reacts to moves after they happen.</p></div>
-    <div class="not"><h3>A product of Robinhood or Chainlink</h3><p>It runs on their rails. Credit is not endorsement. Same for OpenWorm and nematoduino.</p></div>
-    <div class="not"><h3>Steered by the token</h3><p>$WETWARE's taxes pay holders in tokenized NVDA around the clock. None of it reaches the worm. The worm sleeps. The rewards don't.</p></div>
-  </div>
-</section>
 
 <section class="band">
-  <h2>Roadmap</h2>
-  <div class="road">
+  <h2>Roadmap <span>it is born, it sleeps, it struggles, it is checked, it is set free</span></h2>
+  <div class="track" id="track">
+    <svg viewBox="0 0 1200 340" preserveAspectRatio="none" aria-hidden="true">
+      <path id="track-future" class="future" d="M 40 230 C 180 60, 300 60, 420 170 S 600 320, 740 190 S 920 40, 1040 150 S 1150 240, 1170 200" />
+      <path id="track-done" class="done" d="M 40 230 C 180 60, 300 60, 420 170 S 600 320, 740 190 S 920 40, 1040 150 S 1150 240, 1170 200" />
+      <g id="track-nodes"></g>
+      <g id="track-head-g"><path id="track-head" /></g>
+    </svg>
+    <div class="track-labels" id="track-labels"></div>
+  </div>
+  <div class="road road-mobile">
     <div><div class="tag done">done</div><h3>Testnet</h3><p>Deployed, fed with real NVDA rounds, verified by terminal, by CI, and by the browser.</p></div>
-    <div><div class="tag next">next</div><h3>Mainnet genesis</h3><p>The real feed, a fresh genesis, the deploy block pinned in VERIFY.md.</p></div>
-    <div><div class="tag">v2</div><h3>The enclave</h3><p>The simulator inside an attested enclave. The poster key introduced by attestation, permissionlessly.</p></div>
+    <div><div class="tag next">next</div><h3>Mainnet genesis</h3><p>The real feed, a fresh genesis, the first tick quotable forever.</p></div>
+    <div><div class="tag">then</div><h3>First independent verification</h3><p>A stranger replays the record and confirms it. The most important person in the project's history.</p></div>
+    <div><div class="tag">v2</div><h3>The enclave</h3><p>The simulator inside a sealed enclave. The poster key introduced by attestation, permissionlessly.</p></div>
     <div><div class="tag">v2</div><h3>No operator</h3><p>Ownership renounced. Nobody runs the worm. Nobody can.</p></div>
   </div>
 </section>

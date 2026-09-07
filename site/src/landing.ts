@@ -162,6 +162,64 @@ function hero(): void {
   requestAnimationFrame(frame);
 }
 
+/** The roadmap as a worm track: milestones are rings on the path, the worm sits where the project is. */
+function track(): (() => void) | null {
+  const svg = document.querySelector<SVGSVGElement>('#track svg');
+  const future = document.getElementById('track-future') as unknown as SVGPathElement | null;
+  const done = document.getElementById('track-done') as unknown as SVGPathElement | null;
+  const nodes = document.getElementById('track-nodes');
+  const labels = document.getElementById('track-labels');
+  const head = document.getElementById('track-head') as unknown as SVGPathElement | null;
+  const headG = document.getElementById('track-head-g');
+  if (!svg || !future || !done || !nodes || !labels || !head || !headG) return null;
+
+  const milestones = [
+    { at: 0.04, state: 'done', tag: 'done', title: 'Testnet', text: 'Deployed, fed with real NVDA rounds, verified by terminal, by CI, and by the browser.', side: 'below' },
+    { at: 0.30, state: 'next', tag: 'next', title: 'Mainnet genesis', text: 'The real feed, a fresh genesis, the first tick quotable forever.', side: 'above' },
+    { at: 0.53, state: '', tag: 'then', title: 'First independent verification', text: 'A stranger replays the record and confirms it. The most important person in the project\'s history.', side: 'below' },
+    { at: 0.76, state: '', tag: 'v2', title: 'The enclave', text: 'The simulator inside a sealed enclave. The poster key introduced by attestation.', side: 'above' },
+    { at: 0.965, state: '', tag: 'v2', title: 'No operator', text: 'Ownership renounced. Nobody runs the worm. Nobody can.', side: 'below' },
+  ];
+  const progress = 0.17; // between testnet and mainnet genesis
+
+  const total = future.getTotalLength();
+  done.setAttribute('stroke-dasharray', `${total * progress} ${total}`);
+  const NS = 'http://www.w3.org/2000/svg';
+  for (const m of milestones) {
+    const p = future.getPointAtLength(total * m.at);
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', String(p.x)); c.setAttribute('cy', String(p.y)); c.setAttribute('r', '7');
+    c.setAttribute('class', `node ${m.state}`);
+    nodes.appendChild(c);
+    const l = document.createElement('div');
+    l.className = `track-label ${m.side}`;
+    l.style.left = `${(p.x / 1200) * 100}%`;
+    l.style.top = `${(p.y / 340) * 100}%`;
+    l.innerHTML = `<div class="tag ${m.state}">${m.tag}</div><h3>${m.title}</h3><p>${m.text}</p>`;
+    labels.appendChild(l);
+  }
+
+  // The worm at the head of the travelled path, oriented along the track.
+  const hp = future.getPointAtLength(total * progress);
+  const hq = future.getPointAtLength(Math.min(total, total * progress + 2));
+  const angle = (Math.atan2(hq.y - hp.y, hq.x - hp.x) * 180) / Math.PI;
+  headG.setAttribute('transform', `translate(${hp.x} ${hp.y}) rotate(${angle})`);
+  return () => {
+    const t = performance.now() / 1000;
+    let d = '';
+    const segs = 12, len = 54;
+    for (let i = 0; i <= segs; i++) {
+      const u = i / segs;
+      const x = -u * len;
+      const y = Math.sin(u * Math.PI * 2 - t * 6) * 5 * (0.3 + u);
+      d += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+    }
+    head.setAttribute('d', d);
+  };
+}
+
 hero();
+const wiggle = track();
+if (wiggle) { const loop = () => { wiggle(); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 void status();
 setInterval(() => void status(), 30_000);

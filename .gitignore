@@ -1,0 +1,7 @@
+node_modules/
+ref-nematoduino/
+crossref/*.o
+crossref/refworm
+services/poster/trace.json
+.env
+site/dist/

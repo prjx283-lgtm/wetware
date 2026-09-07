@@ -1,0 +1,52 @@
+# Fly.io: one always-on machine for the poster, restarted on failure.
+#
+# Secrets are never here. Set them with:
+#   flyctl secrets set POSTER_PRIVATE_KEY=0x...
+#   flyctl secrets set MIRROR_PRIVATE_KEY=0x...      (testnet mirror only)
+#   flyctl secrets set TELEGRAM_BOT_TOKEN=... TELEGRAM_CHAT_ID=...   (or ALERT_WEBHOOK_URL)
+#
+# For mainnet: change NETWORK, drop FEED_ADDRESS, set STATE_ADDRESS and
+# FROM_BLOCK to the mainnet deploy, and delete the mirror process group.
+
+app = "wetware-poster"
+primary_region = "iad"
+
+[build]
+
+[env]
+  NETWORK = "testnet"
+  FEED = "NVDA"
+  FEED_ADDRESS = "0x0D9858cAaeabbe85a82C57d47F43bb5B78199a1A"
+  STATE_ADDRESS = "0x395E2b16354918e9aA3c9382E42E9de33Efb7EDe"
+  FROM_BLOCK = "114823883"
+  PORT = "8080"
+  GAS_ALARM_ETH = "0.002"
+  BACKFILL = "0"
+  STEP_MS = "30000"
+
+[processes]
+  poster = "node --experimental-strip-types services/poster/poster.ts"
+  # Testnet only: copies real mainnet NVDA rounds into the MockAggregator.
+  mirror = "node --experimental-strip-types services/poster/mirror.ts"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["poster"]
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "60s"
+    method = "GET"
+    path = "/health"
+
+[[restart]]
+  policy = "always"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

@@ -1,0 +1,14 @@
+{
+  "name": "@wetware/core",
+  "version": "1.0.0",
+  "description": "Deterministic C. elegans connectome simulator. Runs identically in Node and the browser.",
+  "license": "GPL-2.0-or-later",
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "test": "node --experimental-strip-types --test src/*.test.ts"
+  },
+  "dependencies": {
+    "@noble/hashes": "^1.8.0"
+  }
+}

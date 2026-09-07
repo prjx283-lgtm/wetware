@@ -1,0 +1,11 @@
+node_modules
+packages/core/node_modules
+ref-nematoduino
+crossref
+site
+.claude
+.git
+.env
+*.log
+services/poster/trace.json
+services/poster/*.test.ts

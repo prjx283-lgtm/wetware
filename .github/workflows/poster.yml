@@ -1,0 +1,57 @@
+# The poster, as a cron job. Runs every five minutes, restores the organism
+# from the chain, posts if the feed has advanced, and exits. Nothing stays
+# resident, so there is nothing to run out of memory or get stuck; and every
+# run replays from genesis, so a run can never fork the organism.
+#
+# Secrets (Settings > Secrets and variables > Actions), set by a human:
+#   POSTER_PRIVATE_KEY   signs postState
+#   MIRROR_PRIVATE_KEY   testnet only: fills the MockAggregator
+#   ALERT_WEBHOOK_URL or TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID   the gas alarm
+#
+# A low poster balance fails the run on purpose, so the failure notification
+# and the red badge are the alarm even if no webhook is set.
+name: poster
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: poster
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      RUN_ONCE: '1'
+      NETWORK: ${{ vars.WETWARE_NETWORK || 'testnet' }}
+      FEED: ${{ vars.WETWARE_FEED || 'NVDA' }}
+      FEED_ADDRESS: ${{ vars.WETWARE_FEED_ADDRESS || '0x0D9858cAaeabbe85a82C57d47F43bb5B78199a1A' }}
+      STATE_ADDRESS: ${{ vars.WETWARE_STATE_ADDRESS || '0x395E2b16354918e9aA3c9382E42E9de33Efb7EDe' }}
+      FROM_BLOCK: ${{ vars.WETWARE_FROM_BLOCK || '114823883' }}
+      GAS_ALARM_ETH: ${{ vars.WETWARE_GAS_ALARM_ETH || '0.002' }}
+      ALERT_WEBHOOK_URL: ${{ secrets.ALERT_WEBHOOK_URL }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --omit=dev && cd packages/core && npm ci --omit=dev
+
+      - name: mirror mainnet rounds into the testnet mock
+        if: env.NETWORK == 'testnet'
+        env:
+          MIRROR_PRIVATE_KEY: ${{ secrets.MIRROR_PRIVATE_KEY }}
+          STEP_MS: '20000'
+        run: npm run mirror
+
+      - name: feed the worm
+        env:
+          POSTER_PRIVATE_KEY: ${{ secrets.POSTER_PRIVATE_KEY }}
+        run: npm run poster

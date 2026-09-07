@@ -1,0 +1,33 @@
+# Replays every recorded state against the chain on a schedule and fails
+# loudly on divergence. A red badge here is the project's honesty signal.
+name: verify
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Repository variables override these once the organism moves to mainnet.
+      NETWORK: ${{ vars.WETWARE_NETWORK || 'testnet' }}
+      FEED: ${{ vars.WETWARE_FEED || 'NVDA' }}
+      FEED_ADDRESS: ${{ vars.WETWARE_FEED_ADDRESS || '0x0D9858cAaeabbe85a82C57d47F43bb5B78199a1A' }}
+      STATE_ADDRESS: ${{ vars.WETWARE_STATE_ADDRESS || '0x395E2b16354918e9aA3c9382E42E9de33Efb7EDe' }}
+      FROM_BLOCK: ${{ vars.WETWARE_FROM_BLOCK || '114823883' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci && cd packages/core && npm ci
+      - name: simulator self-check
+        run: npm run test:core
+      - name: replay every recorded state
+        run: npm run verify

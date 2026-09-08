@@ -1,7 +1,11 @@
-# The poster, as a cron job. Runs every five minutes, restores the organism
-# from the chain, posts if the feed has advanced, and exits. Nothing stays
-# resident, so there is nothing to run out of memory or get stuck; and every
-# run replays from genesis, so a run can never fork the organism.
+# The poster, as a GitHub Actions job that feeds the worm every five minutes.
+#
+# GitHub's cron is not a clock: on this repo it fired every three to four
+# hours and the worm missed six of eleven rounds in its first live session.
+# So one job now runs for almost six hours, feeding every five minutes, then
+# dispatches its successor and exits. The cron stays as a safety net that
+# restarts the chain if it ever breaks. Every feeding restores the organism
+# from the chain first, so no run can ever fork it.
 #
 # Secrets (Settings > Secrets and variables > Actions), set by a human:
 #   POSTER_PRIVATE_KEY   signs postState
@@ -22,6 +26,10 @@ on:
         type: boolean
         default: false
 
+permissions:
+  actions: write
+  contents: read
+
 concurrency:
   group: poster
   cancel-in-progress: false
@@ -29,7 +37,7 @@ concurrency:
 jobs:
   post:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 358
     env:
       RUN_ONCE: '1'
       NETWORK: ${{ vars.WETWARE_NETWORK || 'testnet' }}
@@ -50,14 +58,28 @@ jobs:
           cache: npm
       - run: npm ci --omit=dev && cd packages/core && npm ci --omit=dev
 
-      - name: mirror mainnet rounds into the testnet mock
-        if: env.NETWORK == 'testnet'
+      - name: feed the worm every five minutes for the life of this job
         env:
           MIRROR_PRIVATE_KEY: ${{ secrets.MIRROR_PRIVATE_KEY }}
-          STEP_MS: '20000'
-        run: npm run mirror
-
-      - name: feed the worm
-        env:
           POSTER_PRIVATE_KEY: ${{ secrets.POSTER_PRIVATE_KEY }}
-        run: npm run poster
+          STEP_MS: '20000'
+          # An alarm test is a single feeding, not a six-hour job.
+          ITERATIONS: ${{ inputs.alarm_test && '1' || '69' }}
+        run: |
+          alarm=0
+          for i in $(seq 1 "$ITERATIONS"); do
+            echo "::group::feeding $i of $ITERATIONS, $(date -u +%H:%M:%SZ)"
+            if [ "$NETWORK" = "testnet" ]; then npm run mirror || echo "[mirror] failed this round, will retry"; fi
+            npm run poster; code=$?
+            if [ "$code" = "2" ]; then alarm=1; fi
+            if [ "$code" != "0" ] && [ "$code" != "2" ]; then echo "[wetware] poster exited $code, will retry"; fi
+            echo "::endgroup::"
+            [ "$i" -lt "$ITERATIONS" ] && sleep 300
+          done
+          if [ "$alarm" = "1" ]; then echo "::error::gas alarm was raised during this job"; exit 2; fi
+
+      - name: hand over to the next job
+        if: always() && inputs.alarm_test != true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run poster.yml --repo "$GITHUB_REPOSITORY"
